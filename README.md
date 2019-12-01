@@ -1,6 +1,7 @@
 # ChinaIPWhiteListPac
 
 基于ipip.net数据库的中国大陆IP段白名单PAC。
+
 使用方法：
 
 将本地socks5代理端口绑定到1080端口。
