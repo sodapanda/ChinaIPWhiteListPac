@@ -5723,13 +5723,14 @@ let cnIp = [[3232235520, 3232301055],
 [3758095360, 3758095871],
 ];
 
+let hostMap = {};
+
 function ip2int(ip) {
     return ip.split('.').reduce(function (ipInt, octet) { return (ipInt << 8) + parseInt(octet, 10) }, 0) >>> 0;
 }
 
-function isCN_IP(ipAddr) {
+function isCNIP(ipAddr) {
     intIp = ip2int(ipAddr);
-    alert('ip convert is=' + intIp);
     let isInRange = false;
     for (let i = 0; i < cnIp.length; i++) {
         item = cnIp[i];
@@ -5742,8 +5743,23 @@ function isCN_IP(ipAddr) {
     return isInRange;
 }
 
-function getProxyByIP(ipAddr) {
-    return isCN_IP(ipAddr) ? no_proxy : proxy;
+function getProxyByIP(ipAddr, host) {
+    let cacheValue = hostMap[host];
+    alert('cache value ' + cacheValue + ' ' + host);
+    if (cacheValue) {
+        return cacheValue;
+    }
+    let rst = isCNIP(ipAddr) ? no_proxy : proxy;
+    alert('isCNIP ' + rst + ' ' + host);
+    hostMap[host] = rst;
+
+    alert('cache count ' + Object.keys(hostMap).length);
+
+    if (Object.keys(hostMap).length > 10000) {
+        hostMap = {};
+    }
+
+    return rst;
 }
 
 function FindProxyForURL(url, host) {
@@ -5752,10 +5768,9 @@ function FindProxyForURL(url, host) {
     }
 
     ipAddr = dnsResolve(host)
-    alert('dns resolve is ' + ipAddr);
     if (!ipAddr) {
         return no_proxy;
     }
 
-    return getProxyByIP(ipAddr);
+    return getProxyByIP(ipAddr, host);
 }
