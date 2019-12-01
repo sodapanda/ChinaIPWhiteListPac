@@ -8,4 +8,4 @@
 
 将PAC地址设置为 https://raw.githubusercontent.com/sodapanda/ChinaIPWhiteListPac/master/IPWhiteListPac.js
 
-DNS污染问题请自行解决。例如使用DoH，可将DNS地址设置为 https://www.233py.com/#dnsservice 的香港地址，具体方法请自行查找。若DNS污染未解决，请不要使用该PAC。
+DNS污染问题请自行解决。例如使用DoH，具体方法请自行查找。若DNS污染未解决，请不要使用该PAC。
