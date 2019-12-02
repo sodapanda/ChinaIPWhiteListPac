@@ -5744,22 +5744,24 @@ function isCNIP(ipAddr) {
 }
 
 function getProxyByIP(ipAddr, host) {
-    let cacheValue = hostMap[host];
-    alert('cache value ' + cacheValue + ' ' + host);
-    if (cacheValue) {
-        return cacheValue;
-    }
     let rst = isCNIP(ipAddr) ? no_proxy : proxy;
     alert('isCNIP ' + rst + ' ' + host);
-    hostMap[host] = rst;
+    setCache(host, rst);
+    return rst;
+}
 
-    alert('cache count ' + Object.keys(hostMap).length);
+function getCache(host) {
+    return hostMap[host];
+}
 
-    if (Object.keys(hostMap).length > 10000) {
+function setCache(host, proxyType) {
+    // clear cache in a simple way.
+    let cacheSize = Object.keys(hostMap).length;
+    alert('caceh size is ' + cacheSize);
+    if (cacheSize > 10000) {
         hostMap = {};
     }
-
-    return rst;
+    hostMap[host] = proxyType;
 }
 
 function FindProxyForURL(url, host) {
@@ -5767,7 +5769,14 @@ function FindProxyForURL(url, host) {
         return no_proxy;
     }
 
+    let cacheValue = getCache(host);
+    alert('cache value is ' + cacheValue + ' host is ' + host);
+    if (cacheValue) {
+        return cacheValue;
+    }
+
     ipAddr = dnsResolve(host)
+    alert('dns resolve is ' + ipAddr + ' host ' + host);
     if (!ipAddr) {
         return no_proxy;
     }
