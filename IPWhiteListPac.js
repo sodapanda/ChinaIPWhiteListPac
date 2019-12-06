@@ -5837,6 +5837,7 @@ function FindProxyForURL(url, host) {
     ipAddr = dnsResolve(host)
     alert('dns resolve is ' + ipAddr + ' host ' + host);
     if (!ipAddr) {
+        setCache(host, no_proxy);
         return no_proxy;
     }
 
